@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Queens</title>
+    <style>
+      body {
+    font-family: Arial, sans-serif;
+    background-color: black;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    background-color: purple;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px solid red;
+    width: 80%;
+    max-width: 600px;
+}
+
+h1 {
+    text-align: center;
+    color: white;
+}
+
+.question {
+    margin-bottom: 20px;
+}
+
+.question h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.answers {
+    list-style-type: none;
+    padding: 0;
+}
+
+.answers li {
+    margin-bottom: 10px;
+}
+
+#submit {
+    background-color: white;
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#submit:hover {
+    background-color: black;
+}
+
+#results {
+    margin-top: 20px;
+    font-size: 18px;
+    text-align: center;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Queens CAPS</h1>
+        <div id="quiz">
+        </div>
+        <button id="submit">Resultado</button>
+        <div id="results"></div>
+    </div>
+    <script>
+      const questions = [
+    {
+        question: "1-O que significa CAPS?",
+        answers: {
+            a: "Centro de Atenção Psicossocial",
+            b: "Centro de Atendimento Psicológico Social",
+            c: "Centro de Apoio Psicossocial",
+            d:"nd"
+        },
+        correctAnswer: "a"
+    },
+    {
+        question: "2-Qual é o principal objetivo dos CAPS?",
+        answers: {
+            a: "Oferecer apoio psicológico em situações de crise",
+            b: "Internar pacientes com transtornos mentais",
+            c: "Promover a reabilitação psicossocial",
+            d:"nd"
+        },
+        correctAnswer: "c"
+    },
+    {
+        question: "3-Os CAPS são destinados a qual público?",
+        answers: {
+            a: "Apenas adultos",
+            b: "Crianças, adolescentes e adultos",
+            c: "Apenas idosos",
+            d:"nd"
+        },
+        correctAnswer: "b"
+    },
+    {
+        question: "4-Os CAPS fazem parte de qual sistema?",
+        answers: {
+            a: "Sistema Único de Saúde (SUS)",
+            b: "Sistema Privado de Saúde",
+            c: "Sistema de Saúde Mental Independente",
+            d:"nd"
+        },
+        correctAnswer: "a"
+    },
+    {
+        question: "5-Qual é a principal diferença entre CAPS e hospitais psiquiátricos?",
+        answers: {
+            a: "Os CAPS oferecem tratamento ambulatorial",
+            b: "Os CAPS internam pacientes",
+            c: "Os CAPS são especializados apenas em crianças",
+            d:"nd"
+        },
+        correctAnswer: "a"
+    },
+    {
+        question: "6-Qual profissional é encontrado em um CAPS?",
+        answers: {
+            a: "Apenas psicólogos",
+            b: "Equipe multiprofissional",
+            c: "Apenas psiquiatras",
+            d:"nd"
+        },
+        correctAnswer: "b"
+    },
+    {
+        question: "7-Qual é a importância da família no tratamento oferecido pelos CAPS?",
+        answers: {
+            a: "A família não participa do tratamento",
+            b: "A família é vista como parceira no processo de reabilitação",
+            c: "A família só é informada em casos de emergência",
+            d:"nd"
+        },
+        correctAnswer: "b"
+    },
+    {
+        question: "8-Como os CAPS lidam com a medicação dos pacientes?",
+        answers: {
+            a: "Os CAPS não prescrevem medicamentos",
+            b: "Os CAPS fazem a gestão e administração dos medicamentos",
+            c: "Os pacientes devem buscar medicação em outro local",
+            d:"nn sei"
+        },
+        correctAnswer: "b"
+    },
+    {
+        question: "9-Os CAPS podem realizar internações?",
+        answers: {
+            a: "Sim, por longos períodos",
+            b: "Sim, mas apenas internações curtas e em casos de crise",
+            c: "Não, os CAPS nunca realizam internações",
+            d:"nd"
+        },
+        correctAnswer: "b"
+    },
+    {
+        question: "10-Qual é a abordagem terapêutica dos CAPS?",
+        answers: {
+            a: "Apenas terapias individuais",
+            b: "Apenas terapias grupais",
+            c: "Uma combinação de terapias individuais e grupais",
+            d:"nd"
+        },
+        correctAnswer: "c"
+    }
+];
+
+function buildQuiz() {
+    const quizContainer = document.getElementById('quiz');
+    const output = [];
+
+    questions.forEach((currentQuestion, questionNumber) => {
+        const answers = [];
+
+        for (letter in currentQuestion.answers) {
+            answers.push(
+                `<label>
+                    <input type="radio" name="question${questionNumber}" value="${letter}">
+                    ${letter} :
+                    ${currentQuestion.answers[letter]}
+                </label>`
+            );
+        }
+
+        output.push(
+            `<div class="question"> <h2>${currentQuestion.question}</h2> </div>
+             <div class="answers"> ${answers.join('')} </div>`
+        );
+    });
+
+    quizContainer.innerHTML = output.join('');
+}
+
+function showResults() {
+    const answerContainers = quiz.querySelectorAll('.answers');
+    let numCorrect = 0;
+
+    questions.forEach((currentQuestion, questionNumber) => {
+        const answerContainer = answerContainers[questionNumber];
+        const selector = `input[name=question${questionNumber}]:checked`;
+        const userAnswer = (answerContainer.querySelector(selector) || {}).value;
+
+        if (userAnswer === currentQuestion.correctAnswer) {
+            numCorrect++;
+        }
+    });
+
+    resultsContainer.innerHTML = `${numCorrect} de ${questions.length}`;
+}
+
+buildQuiz();
+
+const submitButton = document.getElementById('submit');
+const resultsContainer = document.getElementById('results');
+
+submitButton.addEventListener('click', showResults);
+    </script>
+</body>
+</html>
